@@ -3,14 +3,14 @@ const express       = require('express');
 const path          = require('path');
 const bodyParser    = require('body-parser');
 const morgan        = require('morgan');
-const cimpression   = require('cimpression');
+const compression   = require('compression');
 
 const app           = express();
 const port          = 3000;
 
 // Webpack dependencies, do not include in production
 const webpackConfig = require('../webpack.config.js');
-if (!config.production) {
+if (!webpackConfig.production) {
     const webpack               = require('webpack');
     const webpackDevMiddleware  = require('webpack-dev-middleware');
     const webpackHotMiddleware  = require('webpack-hot-middleware');
@@ -28,13 +28,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Webpack middleware, do not include in production
-if (!config.production) {
+if (!webpackConfig.production) {
     app.use(webpackDevMiddleware(compiler, {
         noInfo: true,
-        publicPath: config.output.publicPath,
+        publicPath: webpackConfig.output.publicPath,
     }));
     app.use(webpackHotMiddleware(compiler));
 }
+
+// Redirect favicon.ico to favicon.png
+app.use((req, res, next) => {
+    if (req.originalUrl !== '/favicon.ico') {
+        return next();
+    }
+
+    // Redirect to favicon.png
+    res.redirect('/favicon.png');
+});
 
 // Routes
 app.use(express.static('./dist'));

@@ -15,7 +15,7 @@ const entry = ((production) => {
         ];
     } else {
         return [
-            'webpack-hot-middleware',
+            'webpack-hot-middleware/client',
             './client/app/boot.js',
         ];
     }
@@ -68,6 +68,11 @@ module.exports = {
     production, // Production flag is now publicly available
     entry,
     plugins,
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.js',
+        publicPath: '/',
+    },
     devtool: 'cheap-module-source-map',
     module: {
         loaders: [

@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import actions from '../redux/actions';
 import constants from '../redux/constants';
 
-import './style.scss';
+import './App.scss';
 class App extends Component {
     render() {
         return (
-            <div>
+            <div className="App">
                 <h1>React & Redux Boilerplate Project</h1>
             </div>
         );
